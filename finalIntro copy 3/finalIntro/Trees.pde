@@ -39,6 +39,7 @@ class Tree {
   PImage[] axes = {axe.get(0, 0, 200, 200), axe.get(0, 240, 200, 200), axe.get(0, 500, 200, 200), axe.get(0, 740, 200, 200)};
   float deadTime = 200;
   //continue debugging tree grid 
+  //create trees at random x and y coordinates.
   Tree() {
     xMoveOne = random(100, width - 200);
     yMoveOne = random(100, height - 200);
@@ -47,7 +48,7 @@ class Tree {
     planeOrigin = new PVector(planeX, planeY);
     //image(planes[imgCounter % 7], width / 2, 20);    //println("y is " + yMoveOne);
   }  
-
+//move tree using lerp if isDead state == true, flipped if player chops down tree, also displays axe animation as long as image is greater than -80
   void show() {
     if (gameState == 1) {
       if (isTree1 == true) {
@@ -135,6 +136,7 @@ class Tree {
   }
 
   void treeDead() {
+    //mining, is coordinates of player are within those of the resources and hammer is pressed, tree gets removed, move off screen. 
     if (gameState == 1) {
       if (chariotCount < 6) {
         if (playerX > xMoveOne - 40 && playerX < xMoveOne + 130 && playerY > yMoveOne - 40 && playerY < yMoveOne + 110 && hammer > 4) {
@@ -224,6 +226,7 @@ class Tree {
     }
   }
   void fireMove() {
+    //randomly generate firees
     if (damageCount > 200 & stage5Hit == true) {
       image(fires[frameCount % 3], xMoveOne - random(-200, 200), yMoveOne - random(-200, 200));
       image(fires[frameCount % 3], xMoveTwo, yMoveTwo);
@@ -236,6 +239,7 @@ class Tree {
   }
 
   void reset() {
+    //to run to "resurrect' trees
     isDead1 = false;
     isDead2 = false;
     oilUsed = false;

@@ -1,15 +1,15 @@
 //fourth copy
 import processing.serial.*;
 import processing.sound.*; 
+//import minim library for audio playback
 import ddf.minim.*;
 Minim minim; 
 AudioPlayer moon;
 AudioPlayer desert, coin, ice, death, die, mine;
 //SoundFile moon;
 int game5Counter = 0;
+// ^ used to create counter for screen between stage 3 and 4
 int titleCounter = 0;
-//SoundFile desert;
-PImage nature;
 Serial myPort;
 BackgroundChange bg1 = new BackgroundChange(0, 0);
 Critter critters[];
@@ -18,6 +18,7 @@ Player myPlayer;
 World myWorld;
 //tally interactions with animals and environment damage v-
 float damageCount = 0;
+//global variables for player movement
 int xMove, yMove, hammer;
 int xGlobe = width / 2;
 int yGlobe = 40;
@@ -31,18 +32,21 @@ boolean isThirdDone = false;
 // v used for title sequence. 
 boolean bothTrue = false; 
 boolean petTrue = false; 
+//all counts below used in each stage to
 int chariotCount = 0;
 int phoneCount = 0;
 int critterCount = 0;
 int fanCount = 0;
 int resourceUsed = 0;
 
-
+// game state initialization, created beginner title "tutorial" last so unitial state is 7
 int gameState = 7;
+// number of trees created down below
 int treeCount = 15;
 int playerX = width / 2;
 int playerY = height / 2;
 int buttonCount = 0;
+//various variables for positioning of assets
 float planeX = width / 2;
 float planeY = 30;
 float aircraftX = width - 100;
@@ -63,7 +67,7 @@ void setup() {
   myPlayer = new Player();
   myWorld = new World();
   printArray(Serial.list());  
-  String portname=Serial.list()[63];
+  String portname=Serial.list()[77];
   myPort = new Serial(this, portname, 9600);
   centerPhoneX = width/ 2;
   centerPhoneY = height / 2;
@@ -80,7 +84,6 @@ void setup() {
   die = minim.loadFile("die.mp3");
   mine = minim.loadFile("mine.wav");
   moon.play();
-  nature = loadImage("nature.jpg");
 }
 
 void draw() {
@@ -128,6 +131,7 @@ void draw() {
   }  
   if (gameState == 1) {
     bg1.createGrass();
+    //create trees of number treeCount
     for (int i = 0; i < treeCount; i++) {
       critters[i].run();
       trees[i].show();
@@ -140,10 +144,12 @@ void draw() {
       myPlayer.display();
       myPlayer.update();
       message();
+      //display imageas long as count not greater than four, go through array according to number of resources harvested. 
       if (chariotCount >= 4) {        
         trees[i].planeMove();
         image(trees[i].trains[4], planeX, planeY);
       }
+      //change game state when plane gets off screen, reset some variables and move player back to upper left corner. 
       if (planeX > width) {
         gameState = 2;
         chariotCount = 0;
@@ -252,6 +258,7 @@ void draw() {
     }
   }
   if (gameState == 6) {
+    //reset all boolean and necessary int variables for the game and counteers. 
     fanCount = 0;
     phoneCount = 0;
     chariotCount = 0;
@@ -291,14 +298,14 @@ void serialEvent(Serial myPort) {
       xMove =(int)(values[0]);
       yMove =(int)(values[1]);
       hammer = (int)(values[2]);
-      button = (int)(values[3]);
+      button =(int)(values[3]);
 
       xMove =(int) map(xMove, 0, 1023, -1, 1);
       yMove =(int) map(yMove, 0, 1023, 1, -1);
     }
   }
 }
-
+//function with different messages/prompts to be displayed to player.
 void message() {
   if (chariotCount < 6 && gameState == 1) {
     if (critterCount < 3) {
@@ -351,7 +358,7 @@ void message() {
       text("To cool you off from the heat, make a fan that plugs into your phone!", width / 2, height / 2);
     }
   }
-
+//use the counter to display information until 200 is reached
   if (gameState == 5) {
     if (game5Counter < 200) {
       rectCreate();
@@ -374,6 +381,7 @@ void message() {
     text("Take care of the world and what it gives you...", width / 2, height / 2 - 50);
   }
 }
+//function to create text on bottom of page.
 void rectCreate() {
   rectMode(CORNER);
   fill(0);
@@ -384,6 +392,7 @@ void rectCreate() {
   textAlign(CENTER);
   textSize(32);
 }  
+//alternate this text with a different color (white)
 void rectCreateWhite() {
   rectMode(CORNER);
   fill(255);

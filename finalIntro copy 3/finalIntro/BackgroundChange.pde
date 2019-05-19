@@ -5,6 +5,8 @@ class BackgroundChange {
     x = _x;
     y = _y;
   }  
+  //get segments of spritesheet to create a background 
+
   void createGrass() {
     PImage grass= loadImage("grass.png");
     PImage[] patches = {grass.get(64, 128, 128, 192), grass.get(320, 0, 384, 64), grass.get(0, 0, 64, 64)};
@@ -25,7 +27,6 @@ class BackgroundChange {
       }
     }
   }
-
   void createIce() {
     PImage ice = loadImage("ice.png");
     PImage iceBlock = ice.get(161, 80, 80, 80);

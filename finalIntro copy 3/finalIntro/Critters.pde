@@ -35,6 +35,8 @@ class Critter {
   }  
   void engage() {
     if (gameState == 1 && deadState == false) {
+            //player hits hammer and is within y and x coordinates of the animal 
+
       if (playerX > x - 30 && playerX < x + 30 && playerY > y - 30 && playerY < y +30 && damageCount < 50 && button > 4) {
         image(horseStatic[0], x, y);
         damageCount++;
@@ -46,7 +48,9 @@ class Critter {
         image(dead, x, y);
         damageCount++;
         deadState = true;
+        //if damage count is greater > 200, animal dies, set deadstate to true.
       } else {
+        //randomy move animal when randomly generated number is equal to 5 (multiply xMove by -1)
         randomMove = (int) random(0, 100);
         if (randomMove == 5) {
           xMove *= -1;
@@ -155,13 +159,14 @@ class Critter {
       }
     } else if (gameState == 5 && deadState == false) {
       //debug this v =0;
-
+      //player hits hammer and is within y and x coordinates of the animal 
       if (playerX > x - 20 && playerX < x + 40 && playerY > y - 20 && playerY < y + 40 && damageCount < 200 && button > 4) {
         image(frogLeft[0], x, y);
         damageCount++;
         image(heart, playerX, playerY);
         coin.play();
         coin.rewind();
+        //if damage count is greater > 200, animal dies, set deadstate to true.
       } else if (playerX > x - 40 && playerX < x + 50 && playerY > y - 40 && playerY < y + 50 && damageCount >= 200 && button > 4) {
         image(dead, playerX, playerY);
         damageCount++;
@@ -195,6 +200,8 @@ class Critter {
       }
     }
   }
+
+  //flee function for levels 3 & 4, can also be activated from a lot of engagement with animals in first stages.
   void flee() {
     if (damageCount > 150) {
       //animals getting scared from left
@@ -209,7 +216,7 @@ class Critter {
       }
     }
   }  
-
+  //make sure animals for not randomly go off to sides
   void checkSides () {
     if (x >= width) {
       xMove = -3;
@@ -217,13 +224,14 @@ class Critter {
       xMove = 3;
     }
   }  
+  // move all functions into one
   void run() {
     engage();
     flee();
     checkSides();
   }
-  
+  //make all animals alive again, reset it. to call in final screen for reset.
   void reset() {
     deadState = false;
-  }  
+  }
 }
